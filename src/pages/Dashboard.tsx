@@ -11,6 +11,7 @@ import { CalendarClock, Flame, Clock, Target, ArrowLeft } from 'lucide-react'
 import { useProgressContext } from '../context/ProgressContext'
 import { Card, ProgressRing, Badge } from '../components/ui'
 import { TaskItem } from '../components/TaskItem'
+import { StudyTimer } from '../components/StudyTimer'
 import { GOAL, EXAM_FACTS } from '../data/examInfo'
 import { toFa, formatHours } from '../lib/utils'
 
@@ -149,6 +150,9 @@ export function Dashboard() {
           </div>
         )}
       </Card>
+
+      {/* تایمر تمرین */}
+      <StudyTimer />
 
       {/* نمودار پیشرفت هفتگی */}
       <Card>

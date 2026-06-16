@@ -5,6 +5,7 @@ import {
   CalendarRange,
   GraduationCap,
   Library,
+  NotebookPen,
   Settings as SettingsIcon,
   Moon,
   Sun,
@@ -18,6 +19,7 @@ const NAV = [
   { to: '/roadmap', label: 'رودمپ', icon: CalendarRange },
   { to: '/skills', label: 'مهارت‌ها', icon: GraduationCap },
   { to: '/resources', label: 'منابع', icon: Library },
+  { to: '/errorlog', label: 'دفترچه', icon: NotebookPen },
   { to: '/settings', label: 'تنظیمات', icon: SettingsIcon },
 ]
 

@@ -11,3 +11,12 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
     </BrowserRouter>
   </React.StrictMode>,
 )
+
+// ثبت سرویس‌ورکر برای قابلیت نصب و کارکرد آفلاین (PWA)
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js').catch(() => {
+      /* در صورت نبود پشتیبانی نادیده گرفته شود */
+    })
+  })
+}
