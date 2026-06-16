@@ -6,6 +6,7 @@ import {
   GraduationCap,
   Library,
   NotebookPen,
+  StickyNote,
   Settings as SettingsIcon,
   Moon,
   Sun,
@@ -20,6 +21,7 @@ const NAV = [
   { to: '/skills', label: 'مهارت‌ها', icon: GraduationCap },
   { to: '/resources', label: 'منابع', icon: Library },
   { to: '/errorlog', label: 'دفترچه', icon: NotebookPen },
+  { to: '/notes', label: 'یادداشت', icon: StickyNote },
   { to: '/settings', label: 'تنظیمات', icon: SettingsIcon },
 ]
 
