@@ -8,15 +8,20 @@ import {
   StickyNote,
   ChevronRight,
   Clock,
+  Type,
+  PenLine,
 } from 'lucide-react'
 import { useLocalStorage } from '../hooks/useLocalStorage'
 import { Card } from '../components/ui'
+import { HandwritingCanvas, type Stroke } from '../components/HandwritingCanvas'
 import { cn, toFa } from '../lib/utils'
 
 interface Note {
   id: string
   title: string
   body: string
+  strokes?: Stroke[]
+  mode?: 'text' | 'draw'
   createdAt: number
   updatedAt: number
   pinned: boolean
@@ -65,6 +70,8 @@ export function Notes() {
       id: crypto.randomUUID(),
       title: '',
       body: '',
+      strokes: [],
+      mode: 'draw',
       createdAt: now,
       updatedAt: now,
       pinned: false,
@@ -148,7 +155,9 @@ export function Notes() {
                     </h4>
                   </div>
                   <p className="mt-1 line-clamp-2 text-xs leading-5 text-slate-400">
-                    {n.body.trim() || 'خالی…'}
+                    {n.mode === 'text'
+                      ? n.body.trim() || 'خالی…'
+                      : `✍️ دست‌نویس · ${toFa(n.strokes?.length ?? 0)} خط`}
                   </p>
                   <div className="mt-2 flex items-center gap-1 text-[11px] text-slate-400">
                     <Clock size={11} /> {fmtDate(n.updatedAt)}
@@ -196,17 +205,52 @@ export function Notes() {
                 </button>
               </div>
 
-              <textarea
-                value={selected.body}
-                onChange={(e) => update(selected.id, { body: e.target.value })}
-                placeholder="اینجا بنویس… (متن فارسی و انگلیسی هر دو پشتیبانی می‌شود)"
-                className="flex-1 resize-none bg-transparent text-sm leading-7 outline-none placeholder:text-slate-300"
-              />
-
-              <div className="mt-3 flex items-center justify-between border-t border-slate-100 pt-3 text-xs text-slate-400 dark:border-slate-800">
-                <span>{toFa(countWords(selected.body))} کلمه</span>
-                <span>آخرین ویرایش: {fmtDate(selected.updatedAt)}</span>
+              {/* تب متن / دست‌نویس */}
+              <div className="mb-3 inline-flex rounded-xl bg-slate-100 p-1 dark:bg-slate-800">
+                <button
+                  onClick={() => update(selected.id, { mode: 'draw' })}
+                  className={cn(
+                    'inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm font-medium transition',
+                    (selected.mode ?? 'draw') === 'draw'
+                      ? 'bg-white text-brand-700 shadow-sm dark:bg-slate-900 dark:text-brand-300'
+                      : 'text-slate-500',
+                  )}
+                >
+                  <PenLine size={15} /> دست‌نویس
+                </button>
+                <button
+                  onClick={() => update(selected.id, { mode: 'text' })}
+                  className={cn(
+                    'inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm font-medium transition',
+                    selected.mode === 'text'
+                      ? 'bg-white text-brand-700 shadow-sm dark:bg-slate-900 dark:text-brand-300'
+                      : 'text-slate-500',
+                  )}
+                >
+                  <Type size={15} /> متن
+                </button>
               </div>
+
+              {selected.mode === 'text' ? (
+                <>
+                  <textarea
+                    value={selected.body}
+                    onChange={(e) => update(selected.id, { body: e.target.value })}
+                    placeholder="اینجا بنویس… (متن فارسی و انگلیسی هر دو پشتیبانی می‌شود)"
+                    className="flex-1 resize-none bg-transparent text-sm leading-7 outline-none placeholder:text-slate-300"
+                  />
+                  <div className="mt-3 flex items-center justify-between border-t border-slate-100 pt-3 text-xs text-slate-400 dark:border-slate-800">
+                    <span>{toFa(countWords(selected.body))} کلمه</span>
+                    <span>آخرین ویرایش: {fmtDate(selected.updatedAt)}</span>
+                  </div>
+                </>
+              ) : (
+                <HandwritingCanvas
+                  key={selected.id}
+                  strokes={selected.strokes ?? []}
+                  onChange={(s) => update(selected.id, { strokes: s })}
+                />
+              )}
             </Card>
           ) : (
             <Card className="hidden min-h-[60vh] flex-col items-center justify-center gap-2 text-center lg:flex">
