@@ -6,6 +6,7 @@ import { Roadmap } from './pages/Roadmap'
 import { Skills } from './pages/Skills'
 import { Resources } from './pages/Resources'
 import { ErrorLog } from './pages/ErrorLog'
+import { Notes } from './pages/Notes'
 import { Settings } from './pages/Settings'
 
 export default function App() {
@@ -18,6 +19,7 @@ export default function App() {
           <Route path="/skills" element={<Skills />} />
           <Route path="/resources" element={<Resources />} />
           <Route path="/errorlog" element={<ErrorLog />} />
+          <Route path="/notes" element={<Notes />} />
           <Route path="/settings" element={<Settings />} />
         </Routes>
       </Layout>
